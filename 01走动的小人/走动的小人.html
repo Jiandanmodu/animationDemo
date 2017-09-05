@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #canvas {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="600px" height="400px"></canvas>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    //创建图片对象
+    var images = new Image();
+    images.src = 'img/DMMban.png';
+    //图片加载完成
+    images.onload = function(){
+
+        //图片绘制坐标
+        var x = 0;
+        var y = 200;
+        //图片绘制偏移量
+        var os = 10;
+        //截取第几张图片
+        var i = 0;
+        //图片截取纵坐标
+        var imgy = 0;
+        //设置计时器
+        setInterval(function(){
+            //绘制图片-使用九参模式
+            //绘制新图片之前，将原先的图片清除
+            context.clearRect(0,0,canvas.width,canvas.height);
+            //计算图片截取坐标
+            //横坐标
+            var imgx = (i%4)*40;
+            //纵坐标——判断左右边界
+            //左边界--使用第三行图片,偏移量为正
+            if(x<=0){
+                imgy = 260/4*2;
+                os = 10;
+            };
+            //右边界--使用第二行图片,偏移量为负
+            if(x>=(canvas.width-40)){
+                imgy = 260/4*1;
+                os = -10;
+            };
+            //绘制图片
+            context.drawImage(images,imgx,imgy,40,65,x,y,40,65);
+            //图片的截取数改变
+            i++;
+            //绘制坐标的横坐标改变
+            x += os;
+        },200);
+    }
+</script>
+</body>
+</html>

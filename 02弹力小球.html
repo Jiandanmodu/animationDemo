@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #canvas {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="600px" height="400px"></canvas>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    var x = 300;
+    var y = 200
+    var speedx = 2;
+    var speedy = 2;
+    function draw(){
+        //每次绘制清除画布
+        context.clearRect(0,0,canvas.width,canvas.height);
+        if(x<=20||x>=580){
+           speedx = -speedx;
+        }
+        if(y<=20||y>=380){
+            speedy = -speedy;
+        }
+        x += speedx;
+        y += speedy;
+        //画圆
+        context.beginPath();
+        context.arc(x,y,20,0,2*Math.PI);
+        context.fill();
+
+        //内部调用，此方法是系统自带的优化方法
+        window.requestAnimationFrame(draw);
+    }
+    draw();
+</script>
+</body>
+</html>

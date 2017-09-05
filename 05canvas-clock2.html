@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="1360" height="600"></canvas>
+<script>
+
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    function draw(){
+        context.clearRect(0,0,canvas.width,canvas.height);
+        //1绘制背景
+        context.save();
+        context.beginPath();
+        context.fillRect(0,0,canvas.width,canvas.height);
+        context.restore();
+
+        //坐标平移前保存
+        context.save();
+        context.translate(canvas.width/2,canvas.height/2);
+        //2绘制圆
+        context.save();
+        context.beginPath();
+        context.strokeStyle = 'gold';
+        for(var i = 0;i<4;i++){
+            context.beginPath();
+            context.arc(0,0,40+i*80,0,2*Math.PI);
+            context.stroke();
+        }
+        context.strokeStyle = '#0f0';
+        for(var i =0;i<3;i++){
+            context.beginPath();
+            context.arc(0,0,80+i*80,0,2*Math.PI);
+            context.stroke();
+        }
+        context.restore();
+
+        //控制文字样式保存
+        context.save();
+        context.font = '40px 微软雅黑';
+        context.textBaseline = 'middle';
+        context.fillStyle = 'cyan';
+        //3、绘制中心文字
+        context.save();
+        context.beginPath();
+        context.fillText('》',0,0);
+        context.restore();
+        //6，计算角度
+        var now = new Date();
+        var h = now.getHours();
+        var m = now.getMinutes();
+        var s = now.getSeconds();
+        //小时数位角度
+        var hsRadian = Math.floor(h/10);
+        var hgRadian = h%10;
+        //分钟角度
+        var msRadian = Math.floor(m/10);
+        var mgRadian = m%10;
+        //秒钟角度
+        var ssRadian = Math.floor(s/10);
+        var sgRadian = s%10;
+        //5绘制小时文字
+        var hs = [0,1,2];
+        var sw = [0,1,2,3,4,5];
+        var gw = [0,1,2,3,4,5,6,7,8,9];
+        //小时十位
+        context.save();
+        context.beginPath();
+        context.rotate(-hsRadian*120/180*Math.PI);
+        for(var i = 0;i<hs.length;i++){
+            context.fillText(hs[i],40,0);
+            context.rotate(120/180*Math.PI);
+        }
+        context.restore();
+        //小时各位
+        context.save();
+        context.beginPath();
+        context.rotate(-hgRadian*36/180*Math.PI);
+        for(var i = 0;i<gw.length;i++){
+            context.fillText(gw[i],80,0);
+            context.rotate(36/180*Math.PI);
+        }
+        context.restore();
+        //6绘制分钟文字
+        //十位
+        context.save();
+        context.beginPath();
+        context.rotate(-msRadian*60/180*Math.PI);
+        for(var i = 0;i<sw.length;i++){
+            context.fillText(sw[i],120,0);
+            context.rotate(60/180*Math.PI);
+        }
+        context.restore();
+        //个位
+        context.save();
+        context.beginPath();
+        context.rotate(-mgRadian*36/180*Math.PI);
+        for(var i = 0;i<gw.length;i++){
+            context.fillText(gw[i],160,0);
+            context.rotate(36/180*Math.PI);
+        }
+        context.restore();
+        //7绘制秒钟文字
+        //十位
+        context.save();
+        context.beginPath();
+        context.rotate(-ssRadian*60/180*Math.PI);
+        for(var i = 0;i<sw.length;i++){
+            context.fillText(sw[i],200,0);
+            context.rotate(60/180*Math.PI);
+        }
+        context.restore();
+        //个位
+        context.save();
+        context.beginPath();
+        context.rotate(-sgRadian*36/180*Math.PI);
+        for(var i = 0;i<gw.length;i++){
+            context.fillText(gw[i],240,0);
+            context.rotate(36/180*Math.PI);
+        }
+        context.restore();
+        //绘制遮罩层
+        context.save();
+        context.beginPath();
+        context.fillStyle = 'rgba(0,0,0,0.6)';
+        context.arc(0,0,280,20/180*Math.PI,340/180*Math.PI);
+        context.lineTo(0,0);
+        context.closePath();
+        context.fill();
+        context.restore();
+        //文字样式释放
+        context.restore();
+        //坐标平移前释放
+        context.restore();
+    }
+    //初始调用
+    draw();
+    setInterval(draw,1000);
+
+</script>
+</body>
+</html>

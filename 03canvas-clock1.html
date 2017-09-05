@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #canvas {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="600px" height="400px"></canvas>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    function draw(){
+        //清除画布
+        context.clearRect(0,0,canvas.width,canvas.height);
+        //存储状态
+        context.save();
+        //移动坐标
+        context.translate(300,200);
+        context.rotate(-0.5*Math.PI);
+        //画表盘
+        //保存状态
+        context.save();
+        context.beginPath();
+        context.arc(0,0,125,0,2*Math.PI);
+        context.lineWidth = 3;
+        context.strokeStyle = 'skyblue';
+        context.stroke();
+        //恢复状态
+        context.restore();
+        //画小时刻度
+        context.save();
+        context.beginPath();
+        context.lineWidth = 3;
+        for(var i = 0;i<12;i++){
+            context.moveTo(105,0);
+            context.lineTo(120,0);
+            context.rotate(30/180*Math.PI);
+        }
+        context.stroke();
+        context.restore();
+        //画分钟刻度
+        context.save();
+        context.beginPath();
+        context.lineWidth = 2;
+        for(var i = 0;i<60;i++){
+            if(i%5 != 0){
+                context.moveTo(110,0);
+                context.lineTo(120,0);
+            }
+            context.rotate(6/180*Math.PI);
+        }
+        context.stroke();
+        context.restore();
+        //计算角度
+        var now = new Date();
+        var h = now.getHours();
+        var m = now.getMinutes();
+        var s = now.getSeconds();
+        var hRadian = (h+m/60)/12*2*Math.PI;
+        var mRadian = (m+ s/60)/60*2*Math.PI;
+        var sRadian = s/60*2*Math.PI;
+        //画时针
+        context.save();
+        context.beginPath();
+        context.lineWidth = 5;
+        context.lineCap = 'round';
+        context.strokeStyle = '#0f0';
+        context.rotate(hRadian);
+        context.moveTo(-20,0);
+        context.lineTo(60,0);
+        context.stroke();
+        context.restore();
+        //画分针
+        context.save();
+        context.beginPath();
+        context.lineWidth = 3;
+        context.lineCap = 'round';
+        context.strokeStyle = 'skyblue';
+        context.rotate(mRadian);
+        context.moveTo(-20,0);
+        context.lineTo(80,0);
+        context.stroke();
+        context.restore();
+        //画秒针
+        context.save();
+        context.beginPath();
+        context.strokeStyle = 'red';
+        context.rotate(sRadian);
+        context.moveTo(-10,0);
+        context.lineTo(90,0);
+        context.stroke();
+        context.restore();
+        //画固定点
+        context.save();
+        context.beginPath();
+        context.fillStyle = '#ff0';
+        context.arc(0,0,5,0,2*Math.PI);
+        context.fill();
+        context.restore();
+        //恢复原本状态
+        context.restore();
+    }
+    setInterval(draw,1000);
+</script>
+</body>
+</html>

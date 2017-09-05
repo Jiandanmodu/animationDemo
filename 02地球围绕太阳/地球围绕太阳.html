@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #canvas {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="600px" height="400px"></canvas>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    //创建图片对象
+    var sun = new Image();
+    sun.src = 'img/Canvas_sun.png';
+    var earth = new Image();
+    earth.src = 'img/Canvas_earth.png';
+    var imgArr = [sun,earth];
+    //加载图片
+    var count =0;
+    imgArr.forEach(function(img){
+        img.onload = function () {
+            count++;
+            if(count == imgArr.length){
+                function draw(){
+                    //清空画布
+                    context.clearRect(0,0,canvas.width,canvas.height);
+                    //保存状态
+                    context.save();
+                    context.beginPath();
+                    //绘制太阳
+                    context.drawImage(sun,0,0,300,300);
+                    //平移坐标系
+                    context.translate(150,150);
+                    //计算角度
+                    var now = new Date();
+                    var s = now.getSeconds();
+                    var ms = now.getMilliseconds();
+                    s = s+ms/1000;
+                    //旋转坐标系
+                    context.rotate(s/60*2*Math.PI);
+                    //绘制地球
+                    context.drawImage(earth,110-earth.width/2,-earth.height/2);
+                    //恢复状态
+                    context.restore();
+                    //内部调用
+                    window.requestAnimationFrame(draw);
+                }
+                draw();
+            }
+        }
+    })
+</script>
+</body>
+</html>
